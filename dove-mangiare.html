@@ -10,12 +10,18 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Karla:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260201" />
+    <link rel="stylesheet" href="styles.css?v=20260208" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NJHTPDBJTJ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
       gtag('js', new Date());
       gtag('config', 'G-NJHTPDBJTJ');
     </script>
@@ -1051,6 +1057,15 @@
         });
       }
     </script>
+    <div class="consent-banner is-hidden" role="dialog" aria-modal="false" aria-label="Consenso cookie">
+      <p class="consent-banner__title">Preferenze cookie</p>
+      <p class="consent-banner__text">Usiamo cookie di analisi per misurare le visite e migliorare il sito. Puoi accettare o rifiutare.</p>
+      <div class="consent-banner__actions">
+        <button class="consent-banner__button consent-banner__button--accept" type="button" data-consent-accept>Accetta</button>
+        <button class="consent-banner__button consent-banner__button--reject" type="button" data-consent-reject>Rifiuta</button>
+      </div>
+    </div>
+    <script src="consent.js?v=20260208"></script>
     <script src="weather-widget.js?v=20260201"></script>
   </body>
 </html>
