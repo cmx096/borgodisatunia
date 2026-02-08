@@ -2072,6 +2072,15 @@ body.is-mobile-preview .stay-item:last-child {
   color: #5b574d;
 }
 
+.food-address a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.food-address a:hover {
+  color: var(--terracotta);
+}
+
 .activity-name {
   font-size: 0.9rem;
   letter-spacing: 0.08rem;
