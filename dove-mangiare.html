@@ -739,8 +739,6 @@
     <script>
       const foodGroups = document.querySelectorAll(".food-group");
       let foodGroupsTouched = false;
-      const foodMediaQuery = window.matchMedia("(max-width: 900px)");
-
       const setFoodGroupsOpen = (isOpen) => {
         foodGroups.forEach((group) => {
           group.open = isOpen;
@@ -748,7 +746,7 @@
       };
 
       const initFoodGroups = () => {
-        setFoodGroupsOpen(!foodMediaQuery.matches);
+        setFoodGroupsOpen(false);
       };
 
       foodGroups.forEach((group) => {
@@ -758,16 +756,6 @@
       });
 
       initFoodGroups();
-
-      foodMediaQuery.addEventListener("change", (event) => {
-        if (event.matches) {
-          if (!foodGroupsTouched) {
-            setFoodGroupsOpen(false);
-          }
-        } else {
-          setFoodGroupsOpen(true);
-        }
-      });
 
       const foodMap = document.querySelector(".food-map");
       const foodPins = foodMap ? foodMap.querySelectorAll(".map-pin") : [];
