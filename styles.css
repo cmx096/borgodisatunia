@@ -1299,6 +1299,32 @@ h1 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.activity-image-grid {
+  display: grid;
+  column-gap: 0.6rem;
+  row-gap: 1.4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.activity-image-grid .gallery-card {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-image-grid .gallery-card.is-wide {
+  grid-column: span 2;
+}
+
+.activity-image-grid .gallery-card.is-wide .gallery-image {
+  aspect-ratio: 16 / 9;
+  min-height: clamp(220px, 30vw, 420px);
+}
+
 .gallery-title {
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -1521,6 +1547,49 @@ h1 {
   box-shadow: 0 14px 30px rgba(47, 43, 37, 0.18);
 }
 
+.activity-image-grid .gallery-image {
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  display: block;
+  min-height: clamp(220px, 28vw, 380px);
+  cursor: zoom-in;
+}
+
+.activity-image-grid .gallery-card.page-left::after,
+.activity-image-grid .gallery-card.page-right::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+
+.activity-image-grid .gallery-card.page-left::after {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0) 22%,
+    rgba(0, 0, 0, 0) 72%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+}
+
+.activity-image-grid .gallery-card.page-right::after {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(0, 0, 0, 0) 28%,
+    rgba(0, 0, 0, 0) 78%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
 .gallery-video {
   width: 100%;
   height: auto;
@@ -1588,6 +1657,61 @@ h1 {
   border: 1px solid rgba(200, 180, 150, 0.5);
   box-shadow: 0 14px 30px rgba(47, 43, 37, 0.2);
   background: #000;
+}
+
+.gallery-modal-image {
+  width: 100%;
+  max-height: 70vh;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(200, 180, 150, 0.5);
+  box-shadow: 0 14px 30px rgba(47, 43, 37, 0.2);
+  background: #0f0f0f;
+  object-fit: contain;
+}
+
+.image-modal-stage {
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.image-modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 180, 150, 0.6);
+  background: rgba(255, 247, 238, 0.96);
+  color: var(--ink);
+  font-size: 1.6rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.image-modal-nav:hover {
+  background: var(--terracotta);
+  color: var(--cream);
+}
+
+.image-modal-prev {
+  left: 0.8rem;
+}
+
+.image-modal-next {
+  right: 0.8rem;
+}
+
+.image-modal-counter {
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: #5b574d;
 }
 
 .gallery-modal-caption {
@@ -2209,6 +2333,104 @@ body.is-mobile-preview .stay-item:last-child {
   box-shadow: 0 12px 24px rgba(47, 43, 37, 0.1);
 }
 
+.activity-accordion {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-accordion + .activity-accordion {
+  margin-top: 0.8rem;
+}
+
+.activity-accordion-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.activity-accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.activity-accordion-summary::after {
+  content: "+";
+  font-size: 1rem;
+  color: var(--terracotta);
+  font-weight: 700;
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(200, 114, 77, 0.85);
+  background: rgba(255, 247, 238, 0.98);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(47, 43, 37, 0.12);
+}
+
+.activity-accordion[open] .activity-accordion-summary::after {
+  content: "–";
+}
+
+.activity-accordion-summary .info-highlight {
+  flex: 1;
+}
+
+.activity-accordion.is-cascatelle .info-highlight {
+  background-image:
+    linear-gradient(rgba(255, 247, 238, 0.78), rgba(255, 247, 238, 0.78)),
+    url("https://img.youtube.com/vi/13hudUrJ30g/hqdefault.jpg");
+  background-size: cover;
+  background-position: center;
+  border-color: rgba(200, 114, 77, 0.4);
+}
+
+.activity-accordion.is-terme .info-highlight {
+  background-image:
+    linear-gradient(rgba(255, 247, 238, 0.78), rgba(255, 247, 238, 0.78)),
+    url("https://img.youtube.com/vi/ZqJY7ghRzjU/hqdefault.jpg");
+  background-size: cover;
+  background-position: center;
+  border-color: rgba(200, 114, 77, 0.4);
+}
+
+
+.activity-accordion-summary:hover .info-highlight {
+  border-color: rgba(200, 114, 77, 0.75);
+  box-shadow: 0 14px 28px rgba(47, 43, 37, 0.14);
+}
+
+.activity-accordion-body {
+  margin-top: 0.6rem;
+}
+
+@media (min-width: 900px) {
+  #acque-termali.activity-section {
+    width: min(1240px, 100%);
+  }
+
+  .info-highlight {
+    min-height: 180px;
+    padding: 1.2rem 1.4rem;
+  }
+
+  .activity-accordion-summary::after {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .activity-accordion-summary .info-highlight::after {
+    top: 0.8rem;
+    right: 1rem;
+    font-size: 0.62rem;
+  }
+}
+
 .info-item--access {
   border-left-color: var(--terracotta);
 }
@@ -2654,20 +2876,33 @@ body.is-mobile-preview .stay-item:last-child {
 }
 
 @media (max-width: 640px) {
-  .activity-video-grid {
+  .activity-video-grid,
+  .activity-image-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.8rem;
+    column-gap: 0.5rem;
+    row-gap: 0.8rem;
   }
 
-  .activity-video-grid .gallery-card {
+  .activity-video-grid .gallery-card,
+  .activity-image-grid .gallery-card {
     padding: 0.7rem;
   }
 
-  .activity-video-grid .gallery-video {
+  .activity-video-grid .gallery-video,
+  .activity-image-grid .gallery-image {
     border-radius: 12px;
   }
 
-  .activity-video-grid .gallery-caption {
+  .activity-image-grid .gallery-card {
+    padding: 0;
+  }
+
+  .activity-image-grid .gallery-image {
+    border-radius: 0;
+  }
+
+  .activity-video-grid .gallery-caption,
+  .activity-image-grid .gallery-caption {
     font-size: 0.82rem;
     line-height: 1.3;
   }
