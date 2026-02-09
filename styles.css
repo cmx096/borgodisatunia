@@ -881,15 +881,25 @@ body.is-mobile-preview .stay-map-card .map-frame img {
   overflow: hidden;
 }
 
+iframe.goog-te-banner-frame,
 .goog-te-banner-frame,
-.goog-te-banner-frame.skiptranslate {
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner {
   display: none !important;
+  visibility: hidden !important;
 }
 
 html,
 body {
   margin-top: 0 !important;
   top: 0 !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-frame,
+body > .skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
 }
 
 #goog-gt-tt,

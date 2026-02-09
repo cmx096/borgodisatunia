@@ -1,3 +1,26 @@
+const stripTranslateBanner = () => {
+  const bannerFrame = document.querySelector(
+    ".goog-te-banner-frame, iframe.goog-te-banner-frame, .goog-te-banner"
+  );
+  if (bannerFrame) {
+    bannerFrame.remove();
+  }
+  document.documentElement.style.top = "0px";
+  if (document.body) {
+    document.body.style.top = "0px";
+  }
+};
+
+const runStripTranslateLoop = (durationMs = 60000) => {
+  const start = Date.now();
+  const interval = window.setInterval(() => {
+    stripTranslateBanner();
+    if (Date.now() - start > durationMs) {
+      window.clearInterval(interval);
+    }
+  }, 500);
+};
+
 (() => {
   const widget = document.querySelector(".language-widget");
   if (!widget) return;
@@ -22,14 +45,16 @@
   };
 
   const applyLangToSelect = (lang) => {
-    const select = document.querySelector("#google_translate_element select");
+    const select = document.querySelector(
+      "#google_translate_element select, .goog-te-combo"
+    );
     if (!select) return false;
     select.value = lang;
     select.dispatchEvent(new Event("change"));
     return true;
   };
 
-  const applyLanguage = (lang) => {
+  const applyLanguage = (lang, { reloadIfNeeded = false } = {}) => {
     if (!lang) return;
     setActive(lang);
     if (window.localStorage) {
@@ -40,10 +65,22 @@
     let tries = 0;
     const timer = window.setInterval(() => {
       tries += 1;
-      if (applyLangToSelect(lang) || tries > 20) {
+      if (applyLangToSelect(lang)) {
         window.clearInterval(timer);
+        return;
+      }
+      if (tries > 20) {
+        window.clearInterval(timer);
+        if (reloadIfNeeded) {
+          const lastReloaded = window.sessionStorage?.getItem("translateReloaded");
+          if (lastReloaded !== lang) {
+            window.sessionStorage?.setItem("translateReloaded", lang);
+            window.location.reload();
+          }
+        }
       }
     }, 250);
+    runStripTranslateLoop();
   };
 
   const closeWidget = () => {
@@ -74,7 +111,8 @@
         toggleWidget();
         return;
       }
-      applyLanguage(button.dataset.lang);
+      applyLanguage(button.dataset.lang, { reloadIfNeeded: true });
+      runStripTranslateLoop();
       if (!window.matchMedia("(min-width: 900px)").matches) {
         closeWidget();
       }
@@ -95,6 +133,8 @@
 
   widget.setAttribute("aria-expanded", "false");
   setActive(storedLang);
+  window.__preferredLanguage = storedLang;
+  window.__applyLanguage = applyLanguage;
   if (storedLang && storedLang !== defaultLang) {
     applyLanguage(storedLang);
   }
@@ -110,4 +150,25 @@ window.googleTranslateElementInit = () => {
     },
     "google_translate_element"
   );
+  if (window.__preferredLanguage && window.__preferredLanguage !== "it") {
+    if (typeof window.__applyLanguage === "function") {
+      window.__applyLanguage(window.__preferredLanguage);
+    }
+  }
 };
+
+(() => {
+  const observer = new MutationObserver(() => {
+    stripTranslateBanner();
+  });
+
+  const root = document.documentElement;
+  if (root) {
+    observer.observe(root, { childList: true, subtree: true });
+  }
+
+  window.addEventListener("load", () => {
+    stripTranslateBanner();
+    runStripTranslateLoop();
+  });
+})();
